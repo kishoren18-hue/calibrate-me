@@ -1,5 +1,7 @@
 # Calibrate Me
 
+[![tests](https://github.com/kishoren18-hue/calibrate-me/actions/workflows/pages.yml/badge.svg)](https://github.com/kishoren18-hue/calibrate-me/actions/workflows/pages.yml) [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **A 20-question game that measures whether your confidence is honest.**
 
 **▶ Play it: https://kishoren18-hue.github.io/calibrate-me/**
