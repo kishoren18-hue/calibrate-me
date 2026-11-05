@@ -7,8 +7,16 @@ Thanks for your interest in improving calibrate-me. Bug reports, ideas, document
 ```bash
 git clone https://github.com/kishoren18-hue/calibrate-me
 cd calibrate-me
-python3 -m http.server 8000     # then open http://localhost:8000
-npm test                        # Node 20+
+npm install                     # Node 20+
+npm run dev                     # then open http://localhost:3000
+```
+
+Solo play works without any setup. Classes and the humans-vs-AI page need Supabase; copy `.env.example` to `.env.local` and see the README's Deploy section.
+
+Run the checks CI runs:
+
+```bash
+npm test && npm run lint && npm run typecheck && npm run build
 ```
 
 ## Making a change
@@ -22,8 +30,8 @@ Good tests matter more than clever code here. A bug fix should come with a test 
 
 ## Ideas to start with
 
-* Add 20 more counterintuitive questions (with sources)
-* Category filter (science, history, geography)
+Issues labeled [good first issue](https://github.com/kishoren18-hue/calibrate-me/labels/good%20first%20issue) are scoped for a first pull request. Other ideas:
+
 * Translate the interface
 
 ## Code of conduct
