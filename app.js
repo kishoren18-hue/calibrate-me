@@ -1,7 +1,9 @@
 import { QUESTIONS } from "./questions.js";
+import { decodeResult, encodeResult } from "./share.js";
 import { summarize, verdict } from "./stats.js";
 
-const ROUNDS = 20;
+const ROUND_OPTIONS = [10, 20, 40];
+let rounds = 20;
 const LEVELS = [0.5, 0.6, 0.7, 0.8, 0.9, 0.99];
 const STORE_KEY = "calibrate-me:sessions:v1";
 const app = document.getElementById("app");
@@ -46,20 +48,25 @@ function intro() {
   app.innerHTML = `
     <div class="kicker">A metacognition game</div>
     <h1>Do you know<br>what you know?</h1>
-    <p>Answer ${ROUNDS} two-choice questions and say how sure you are each time. You don't need to get them all right.
+    <p>Answer two-choice questions and say how sure you are each time. You don't need to get them all right.
        The goal is for your confidence to be <em>honest</em>: right about 70% of the time when you say 70%,
        and more confident on the answers you actually get right.</p>
     <p class="muted">It uses the same measures cognitive scientists use to study confidence in people, and that AI researchers use to check whether a model knows when it's wrong.</p>
-    <div class="actions"><button class="primary" id="start">Start · ${ROUNDS} questions</button></div>
+    <fieldset class="rounds"><legend>Round length</legend>
+      ${ROUND_OPTIONS.map((n) => `<label><input type="radio" name="rounds" value="${n}" ${n === rounds ? "checked" : ""}> ${n} questions</label>`).join("")}
+    </fieldset>
+    <div class="actions"><button class="primary" id="start">Start</button></div>
     ${last ? `<p class="muted" style="margin-top:18px">Last time: ${pct(last.accuracy)} correct, ${
       last.overconfidence > 0 ? "overconfident" : "underconfident"} by ${Math.round(Math.abs(last.overconfidence) * 100)} points
       (${sessions.length} session${sessions.length > 1 ? "s" : ""} on this device).</p>` : ""}`;
+  app.querySelectorAll('input[name="rounds"]').forEach((r) => (r.onchange = () => (rounds = +r.value)));
   document.getElementById("start").onclick = start;
 }
 
 function start() {
   state = {
-    items: shuffle(QUESTIONS).slice(0, ROUNDS).map(([q, a, b, correct, why]) => {
+    rounds,
+    items: shuffle(QUESTIONS).slice(0, rounds).map(([q, a, b, correct, why]) => {
       const flip = Math.random() < 0.5; // randomize option order
       return { q, options: flip ? [b, a] : [a, b], correct: flip ? 1 - correct : correct, why };
     }),
@@ -76,31 +83,32 @@ function question() {
   const answered = state.revealed;
   const t = state.trials[state.i];
   app.innerHTML = `
-    <div class="progress"><div style="width:${(state.i / ROUNDS) * 100}%"></div></div>
-    <div class="qmeta"><span>Question ${state.i + 1} of ${ROUNDS}</span><span class="mono">keys: A / B, then 1–6</span></div>
-    <div class="question">${esc(it.q)}</div>
-    <div class="options">
+    <div class="progress"><div style="width:${(state.i / state.rounds) * 100}%"></div></div>
+    <div class="qmeta"><span>Question ${state.i + 1} of ${state.rounds}</span><span class="mono">keys: A / B, then 1–6</span></div>
+    <h2 class="question" id="q" tabindex="-1">${esc(it.q)}</h2>
+    <div class="options" role="group" aria-labelledby="q">
       ${it.options.map((o, k) => {
         let cls = state.choice === k ? "chosen" : "";
         if (answered) cls = k === it.correct ? "right" : state.choice === k ? "wrong" : "";
-        return `<button data-opt="${k}" class="${cls}" ${answered ? "disabled" : ""}><span class="key">${"AB"[k]}</span>${esc(o)}</button>`;
+        return `<button data-opt="${k}" class="${cls}" aria-pressed="${state.choice === k}" ${answered ? "disabled" : ""}><span class="key">${"AB"[k]}</span>${esc(o)}</button>`;
       }).join("")}
     </div>
     ${!answered ? `
     <div class="conf" ${state.choice === null ? 'style="opacity:.4"' : ""}>
       <div class="conf-label">How sure are you?</div>
-      <div class="conf-row">${LEVELS.map((l, k) => `<button data-conf="${k}" ${state.choice === null ? "disabled" : ""}>${Math.round(l * 100)}%</button>`).join("")}</div>
+      <div class="conf-row" role="group" aria-label="How sure are you?">${LEVELS.map((l, k) => `<button data-conf="${k}" ${state.choice === null ? "disabled" : ""}>${Math.round(l * 100)}%</button>`).join("")}</div>
       <div class="conf-ends"><span>pure guess</span><span>certain</span></div>
     </div>` : `
     <div class="feedback">
-      <strong class="${t.correct ? "good" : "bad"}">${t.correct ? "Correct" : "Not quite"}</strong>
+      <strong role="status" class="${t.correct ? "good" : "bad"}">${t.correct ? "Correct" : "Not quite"}</strong>
       <span class="muted"> · you said ${Math.round(t.confidence * 100)}%</span>
       <div style="margin-top:6px">${esc(it.why)}</div>
     </div>
-    <div class="actions"><button class="primary" id="next">${state.i + 1 === ROUNDS ? "See results" : "Next"}</button></div>`}`;
+    <div class="actions"><button class="primary" id="next">${state.i + 1 === state.rounds ? "See results" : "Next"}</button></div>`}`;
 
   app.querySelectorAll("[data-opt]").forEach((b) => (b.onclick = () => choose(+b.dataset.opt)));
   app.querySelectorAll("[data-conf]").forEach((b) => (b.onclick = () => commit(LEVELS[+b.dataset.conf])));
+  if (!answered && state.choice === null) document.getElementById("q").focus({ preventScroll: true });
   const next = document.getElementById("next");
   if (next) {
     next.onclick = advance;
@@ -127,12 +135,12 @@ function advance() {
   state.i += 1;
   state.choice = null;
   state.revealed = false;
-  if (state.i >= ROUNDS) results();
+  if (state.i >= state.rounds) results();
   else question();
 }
 
 document.addEventListener("keydown", (e) => {
-  if (!state || state.i >= ROUNDS) return;
+  if (!state || state.i >= state.rounds) return;
   const k = e.key.toLowerCase();
   if (!state.revealed && (k === "a" || k === "b")) choose(k === "a" ? 0 : 1);
   else if (!state.revealed && /^[1-6]$/.test(k)) commit(LEVELS[+k - 1]);
@@ -203,12 +211,48 @@ function results() {
       (type-2 AUROC, also called metacognitive sensitivity) asks whether you were more confident on the answers you got right than on the ones you got wrong.
       You can be perfectly calibrated with no discrimination at all, by saying 70% on everything when you get 70% right. Good judgment needs both.</p>
       <p>These are the same measures used to study confidence in people and to check whether AI models know when they're wrong.
-      With ${ROUNDS} questions they're rough; play a few rounds to see a trend.</p>
+      With ${state.rounds} questions they're rough; play a few rounds to see a trend.</p>
       <p>Reliability ${num(s.reliability, 3)} · resolution ${num(s.resolution, 3)} · uncertainty ${num(s.uncertainty, 3)} (Murphy decomposition of the Brier score).</p>
     </details>
-    <div class="actions"><button class="primary" id="again">Play again</button><button id="home">Home</button></div>`;
+    <div class="actions"><button class="primary" id="again">Play again</button><button id="share">Copy share link</button><button id="home">Home</button></div>
+    <p class="muted" id="share-note" style="font-size:13px"></p>`;
+  document.getElementById("share").onclick = () => share(s);
   document.getElementById("again").onclick = start;
   document.getElementById("home").onclick = () => { state = null; intro(); };
 }
 
-intro();
+function shareUrl(s) {
+  return `${location.origin}${location.pathname}#r=${encodeResult(s)}`;
+}
+
+async function share(s) {
+  const url = shareUrl(s);
+  const note = document.getElementById("share-note");
+  try {
+    await navigator.clipboard.writeText(url);
+    note.textContent = "Link copied. It contains only your scores, not your answers.";
+  } catch {
+    note.innerHTML = `Copy this link: <input readonly value="${esc(url)}" style="width:100%" onfocus="this.select()">`;
+  }
+}
+
+function sharedView(s) {
+  app.innerHTML = `
+    <div class="kicker">A shared result</div>
+    <h2>${esc(verdict(s))}</h2>
+    <div class="stats">
+      <div class="stat"><div class="v">${pct(s.accuracy)}</div><div class="k">Accuracy</div><div class="h">over ${s.n} questions</div></div>
+      <div class="stat"><div class="v">${s.overconfidence >= 0 ? "+" : ""}${Math.round(s.overconfidence * 100)}</div><div class="k">Overconfidence</div><div class="h">confidence minus accuracy</div></div>
+      <div class="stat"><div class="v">${num(s.auroc2)}</div><div class="k">Discrimination</div><div class="h">type-2 AUROC</div></div>
+    </div>
+    <div class="panel">${calibrationChart(s.table)}</div>
+    <div class="actions"><button class="primary" id="try">Can you beat it? Play now</button></div>`;
+  document.getElementById("try").onclick = () => {
+    history.replaceState(null, "", location.pathname);
+    intro();
+  };
+}
+
+const sharedResult = location.hash.startsWith("#r=") ? decodeResult(location.hash.slice(3)) : null;
+if (sharedResult) sharedView(sharedResult);
+else intro();

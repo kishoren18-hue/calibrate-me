@@ -31,7 +31,13 @@ These are the same measures cognitive scientists use to study confidence in peop
 
 You can be perfectly calibrated with zero discrimination: say 70% on everything when you get 70% right. Good judgment needs both, which is why both are shown.
 
-Sessions are saved in your browser only (localStorage), so you can see your overconfidence trend across rounds. Nothing is sent anywhere.
+## Features
+
+* **Round length:** 10, 20 or 40 questions. Longer rounds give steadier scores.
+* **Share links:** "Copy share link" encodes only your aggregate scores into the link (no answers, no questions, nothing about you). Anyone who opens it sees your calibration chart and a "Can you beat it?" button. The data sits in the URL fragment, which browsers never send to a server.
+* **History:** sessions are saved in your browser only (localStorage), so you can watch your overconfidence trend across rounds.
+* **Keyboard and screen readers:** play entirely with A/B and 1-6, with labeled answer groups, pressed states, focus moved to each new question, results announced, and reduced motion respected.
+* **No tracking and no backend:** a static page with nothing sent anywhere.
 
 ## Use in a classroom
 
@@ -57,7 +63,7 @@ Tests (Node 20+):
 npm test
 ```
 
-The tests cover the scoring math (including that the Murphy decomposition adds back up to the Brier score) and check the question bank for malformed or duplicate rows.
+The tests cover the scoring math (including that the Murphy decomposition adds back up to the Brier score), share-link encoding (round trips, URL safety, and rejection of tampered links), and the question bank for malformed or duplicate rows.
 
 ## Adding questions
 
@@ -66,6 +72,10 @@ Questions live in `questions.js` as `[question, optionA, optionB, correctIndex, 
 ## Why I built this
 
 My research is on calibration in language models: whether a model's confidence matches its accuracy and whether it can tell its right answers from its wrong ones. I run AI literacy workshops for high school students, and explaining calibration in the abstract never landed. Letting people measure their own confidence first, then asking whether a chatbot's confidence deserves more trust, works much better. The metrics here are the same ones I use on models.
+
+## Contributing
+
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and ideas to start with, [CHANGELOG.md](CHANGELOG.md) for what's new, and [SECURITY.md](SECURITY.md) to report a problem privately.
 
 ## License
 

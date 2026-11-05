@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Calibrate Me: a game for measuring the honesty of your own confidence"
+abstract: "A browser game that measures a player's calibration and metacognitive sensitivity with the same metrics used for people and language models."
+type: software
+authors:
+  - family-names: Nuthalapati
+    given-names: Kishore
+repository-code: "https://github.com/kishoren18-hue/calibrate-me"
+license: MIT
+version: 0.2.0
+date-released: "2026-11-04"
+keywords:
+  - metacognition
+  - calibration
+  - AI literacy
+  - education
