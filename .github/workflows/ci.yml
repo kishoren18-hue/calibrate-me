@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  database:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v5
+      - name: Apply migrations on a Supabase-like stub and run security tests
+        run: |
+          psql -v ON_ERROR_STOP=1 -q -f supabase/tests/supabase_stub.sql
+          psql -v ON_ERROR_STOP=1 -q -f supabase/migrations/0001_calibrate_me.sql
+          psql -v ON_ERROR_STOP=1 -q -f supabase/tests/rls_test.sql | tee out.txt
+          grep -q "RLS TESTS PASSED" out.txt

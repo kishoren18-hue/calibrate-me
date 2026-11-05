@@ -1,0 +1,512 @@
+[
+ {
+  "id": "q01",
+  "question": "Which river is longer?",
+  "options": [
+   "Nile",
+   "Mississippi"
+  ],
+  "correct": 0,
+  "explanation": "The Nile is about 6,650 km; the Mississippi is about 3,730 km."
+ },
+ {
+  "id": "q02",
+  "question": "Which came first?",
+  "options": [
+   "Gutenberg's printing press",
+   "Columbus reaching the Americas"
+  ],
+  "correct": 0,
+  "explanation": "Gutenberg was printing around 1440; Columbus landed in 1492."
+ },
+ {
+  "id": "q03",
+  "question": "Which planet has the larger diameter?",
+  "options": [
+   "Uranus",
+   "Neptune"
+  ],
+  "correct": 0,
+  "explanation": "Uranus is slightly wider, though Neptune is more massive."
+ },
+ {
+  "id": "q04",
+  "question": "Who has more bones?",
+  "options": [
+   "A newborn baby",
+   "An adult"
+  ],
+  "correct": 0,
+  "explanation": "Newborns have roughly 270-300 bones; many fuse into the adult's 206."
+ },
+ {
+  "id": "q05",
+  "question": "Which mountain is taller?",
+  "options": [
+   "Mont Blanc",
+   "Kilimanjaro"
+  ],
+  "correct": 1,
+  "explanation": "Kilimanjaro is about 5,895 m; Mont Blanc is about 4,806 m."
+ },
+ {
+  "id": "q06",
+  "question": "Which city is farther north?",
+  "options": [
+   "Rome",
+   "New York City"
+  ],
+  "correct": 0,
+  "explanation": "Rome is near 41.9°N; New York is near 40.7°N."
+ },
+ {
+  "id": "q07",
+  "question": "Which existed first?",
+  "options": [
+   "Teaching at the University of Oxford",
+   "The Aztec city of Tenochtitlan"
+  ],
+  "correct": 0,
+  "explanation": "Teaching at Oxford dates to around 1096; Tenochtitlan was founded around 1325."
+ },
+ {
+  "id": "q08",
+  "question": "Which country has more people?",
+  "options": [
+   "Australia",
+   "Canada"
+  ],
+  "correct": 1,
+  "explanation": "Canada has about 40 million people; Australia about 27 million."
+ },
+ {
+  "id": "q09",
+  "question": "Which planet has the hotter average surface?",
+  "options": [
+   "Mercury",
+   "Venus"
+  ],
+  "correct": 1,
+  "explanation": "Venus's thick atmosphere traps heat; its surface is about 465°C."
+ },
+ {
+  "id": "q10",
+  "question": "Which element is more abundant in Earth's crust by mass?",
+  "options": [
+   "Silicon",
+   "Oxygen"
+  ],
+  "correct": 1,
+  "explanation": "Oxygen makes up about 46% of the crust; silicon about 28%."
+ },
+ {
+  "id": "q11",
+  "question": "Which planet is closer to the Sun?",
+  "options": [
+   "Earth",
+   "Venus"
+  ],
+  "correct": 1,
+  "explanation": "Venus is the second planet from the Sun; Earth is the third."
+ },
+ {
+  "id": "q12",
+  "question": "Which happened first in 1969?",
+  "options": [
+   "The Moon landing",
+   "Woodstock"
+  ],
+  "correct": 0,
+  "explanation": "Apollo 11 landed in July; Woodstock was in August."
+ },
+ {
+  "id": "q13",
+  "question": "Which ocean is larger?",
+  "options": [
+   "Atlantic",
+   "Indian"
+  ],
+  "correct": 0,
+  "explanation": "The Atlantic is the second-largest ocean after the Pacific."
+ },
+ {
+  "id": "q14",
+  "question": "Which country is larger by area?",
+  "options": [
+   "Brazil",
+   "Australia"
+  ],
+  "correct": 0,
+  "explanation": "Brazil is about 8.5 million km²; Australia about 7.7 million km²."
+ },
+ {
+  "id": "q15",
+  "question": "Which typically sleeps more per day?",
+  "options": [
+   "A koala",
+   "A dog"
+  ],
+  "correct": 0,
+  "explanation": "Koalas sleep around 18-22 hours a day."
+ },
+ {
+  "id": "q16",
+  "question": "Which was founded first?",
+  "options": [
+   "Harvard College",
+   "Isaac Newton was born"
+  ],
+  "correct": 0,
+  "explanation": "Harvard was founded in 1636; Newton was born in 1643."
+ },
+ {
+  "id": "q17",
+  "question": "Which part of the human brain contains more neurons?",
+  "options": [
+   "Cerebral cortex",
+   "Cerebellum"
+  ],
+  "correct": 1,
+  "explanation": "The cerebellum has roughly 69 billion neurons, about four times the cortex."
+ },
+ {
+  "id": "q18",
+  "question": "Where does sound travel faster?",
+  "options": [
+   "Water",
+   "Steel"
+  ],
+  "correct": 1,
+  "explanation": "About 5,900 m/s in steel versus about 1,480 m/s in water."
+ },
+ {
+  "id": "q19",
+  "question": "Which country spans more time zones, counting overseas territories?",
+  "options": [
+   "Russia",
+   "France"
+  ],
+  "correct": 1,
+  "explanation": "France spans 12 time zones thanks to its overseas territories; Russia spans 11."
+ },
+ {
+  "id": "q20",
+  "question": "Which is larger?",
+  "options": [
+   "The Pacific Ocean",
+   "All of Earth's land combined"
+  ],
+  "correct": 0,
+  "explanation": "The Pacific covers about 165 million km²; all land is about 149 million km²."
+ },
+ {
+  "id": "q21",
+  "question": "Cleopatra lived closer in time to…",
+  "options": [
+   "the building of the Great Pyramid",
+   "the Moon landing"
+  ],
+  "correct": 1,
+  "explanation": "The Great Pyramid was built around 2560 BCE; Cleopatra died in 30 BCE."
+ },
+ {
+  "id": "q22",
+  "question": "Which was invented first?",
+  "options": [
+   "The fax machine",
+   "The telephone"
+  ],
+  "correct": 0,
+  "explanation": "Alexander Bain patented an early fax in 1843; the telephone came in 1876."
+ },
+ {
+  "id": "q23",
+  "question": "The Sun's diameter is about how many times Earth's?",
+  "options": [
+   "About 109 times",
+   "About 30 times"
+  ],
+  "correct": 0,
+  "explanation": "The Sun is about 1.39 million km across; Earth about 12,700 km."
+ },
+ {
+  "id": "q24",
+  "question": "Which reaches farther south?",
+  "options": [
+   "Tasmania, Australia",
+   "The southern tip of Africa"
+  ],
+  "correct": 0,
+  "explanation": "Tasmania extends to about 43.6°S; Cape Agulhas is about 34.8°S."
+ },
+ {
+  "id": "q25",
+  "question": "Which is denser?",
+  "options": [
+   "Ice",
+   "Liquid water"
+  ],
+  "correct": 1,
+  "explanation": "Ice is less dense than liquid water, which is why it floats."
+ },
+ {
+  "id": "q26",
+  "question": "Which blood type is the universal red-cell donor?",
+  "options": [
+   "AB positive",
+   "O negative"
+  ],
+  "correct": 1,
+  "explanation": "O negative red cells lack A, B and RhD antigens."
+ },
+ {
+  "id": "q27",
+  "question": "Which heart chamber pumps blood out to the body?",
+  "options": [
+   "Left ventricle",
+   "Right ventricle"
+  ],
+  "correct": 0,
+  "explanation": "The right ventricle pumps to the lungs; the left pumps to the body."
+ },
+ {
+  "id": "q28",
+  "question": "Which is the longest bone in the human body?",
+  "options": [
+   "Tibia",
+   "Femur"
+  ],
+  "correct": 1,
+  "explanation": "The femur (thigh bone) is the longest."
+ },
+ {
+  "id": "q29",
+  "question": "Which happened first?",
+  "options": [
+   "Shakespeare's death",
+   "The Mayflower landing at Plymouth"
+  ],
+  "correct": 0,
+  "explanation": "Shakespeare died in 1616; the Mayflower landed in 1620."
+ },
+ {
+  "id": "q30",
+  "question": "Which has the higher boiling point at sea level?",
+  "options": [
+   "Water",
+   "Ethanol"
+  ],
+  "correct": 0,
+  "explanation": "Water boils at 100°C; ethanol at about 78°C."
+ },
+ {
+  "id": "q31",
+  "question": "How long does light from the Moon take to reach Earth?",
+  "options": [
+   "About 1.3 seconds",
+   "About 13 seconds"
+  ],
+  "correct": 0,
+  "explanation": "The Moon is about 384,000 km away; light covers that in about 1.3 s."
+ },
+ {
+  "id": "q32",
+  "question": "Which country is landlocked?",
+  "options": [
+   "Peru",
+   "Bolivia"
+  ],
+  "correct": 1,
+  "explanation": "Bolivia lost its coastline in the War of the Pacific (1879-1884)."
+ },
+ {
+  "id": "q33",
+  "question": "Which continent has more countries?",
+  "options": [
+   "Asia",
+   "Africa"
+  ],
+  "correct": 1,
+  "explanation": "Africa has 54 UN member states."
+ },
+ {
+  "id": "q34",
+  "question": "Which river is longer?",
+  "options": [
+   "Amazon",
+   "Yangtze"
+  ],
+  "correct": 0,
+  "explanation": "The Amazon is about 6,400 km; the Yangtze about 6,300 km."
+ },
+ {
+  "id": "q35",
+  "question": "Which is the largest organ of the human body?",
+  "options": [
+   "Liver",
+   "Skin"
+  ],
+  "correct": 1,
+  "explanation": "Skin is the largest organ by area and weight."
+ },
+ {
+  "id": "q36",
+  "question": "Which happened first?",
+  "options": [
+   "The telephone was patented",
+   "The American Civil War ended"
+  ],
+  "correct": 1,
+  "explanation": "The Civil War ended in 1865; Bell's telephone patent was 1876."
+ },
+ {
+  "id": "q37",
+  "question": "Which is larger?",
+  "options": [
+   "The number of seconds in a day",
+   "100,000"
+  ],
+  "correct": 1,
+  "explanation": "A day has 86,400 seconds."
+ },
+ {
+  "id": "q38",
+  "question": "Which is larger by area?",
+  "options": [
+   "Texas",
+   "France (mainland)"
+  ],
+  "correct": 0,
+  "explanation": "Texas is about 696,000 km²; mainland France about 552,000 km²."
+ },
+ {
+  "id": "q39",
+  "question": "Which city is farther west?",
+  "options": [
+   "Los Angeles",
+   "Reno, Nevada"
+  ],
+  "correct": 1,
+  "explanation": "Reno is near 119.8°W; Los Angeles is near 118.2°W."
+ },
+ {
+  "id": "q40",
+  "question": "Which metal has the higher melting point?",
+  "options": [
+   "Iron",
+   "Tungsten"
+  ],
+  "correct": 1,
+  "explanation": "Tungsten melts at about 3,422°C, the highest of any metal."
+ },
+ {
+  "id": "q41",
+  "question": "Which language has more native speakers?",
+  "options": [
+   "English",
+   "Mandarin Chinese"
+  ],
+  "correct": 1,
+  "explanation": "Mandarin has roughly 900+ million native speakers."
+ },
+ {
+  "id": "q42",
+  "question": "Which has more chromosomes?",
+  "options": [
+   "A human",
+   "A dog"
+  ],
+  "correct": 1,
+  "explanation": "Dogs have 78 chromosomes; humans have 46."
+ },
+ {
+  "id": "q43",
+  "question": "When is the Eiffel Tower slightly taller?",
+  "options": [
+   "Summer",
+   "Winter"
+  ],
+  "correct": 0,
+  "explanation": "Thermal expansion of the iron adds up to about 15 cm in summer heat."
+ },
+ {
+  "id": "q44",
+  "question": "Which was founded first?",
+  "options": [
+   "Nintendo",
+   "Ford Motor Company"
+  ],
+  "correct": 0,
+  "explanation": "Nintendo began as a playing-card company in 1889; Ford was founded in 1903."
+ },
+ {
+  "id": "q45",
+  "question": "Which neurotransmitter is most associated with reward signaling?",
+  "options": [
+   "Dopamine",
+   "Acetylcholine"
+  ],
+  "correct": 0,
+  "explanation": "Dopamine neurons signal reward and reward prediction errors."
+ },
+ {
+  "id": "q46",
+  "question": "How many stomach chambers does a cow have?",
+  "options": [
+   "Four",
+   "Two"
+  ],
+  "correct": 0,
+  "explanation": "Rumen, reticulum, omasum and abomasum."
+ },
+ {
+  "id": "q47",
+  "question": "Which lobe of the brain primarily processes vision?",
+  "options": [
+   "Frontal",
+   "Occipital"
+  ],
+  "correct": 1,
+  "explanation": "Primary visual cortex sits in the occipital lobe."
+ },
+ {
+  "id": "q48",
+  "question": "Which country has more islands?",
+  "options": [
+   "Indonesia",
+   "Sweden"
+  ],
+  "correct": 1,
+  "explanation": "Sweden has roughly 267,000 islands, most of them tiny."
+ },
+ {
+  "id": "q49",
+  "question": "When the Great Pyramid was built, woolly mammoths…",
+  "options": [
+   "were already extinct",
+   "still survived on an Arctic island"
+  ],
+  "correct": 1,
+  "explanation": "Mammoths survived on Wrangel Island until about 4,000 years ago, after the pyramid (about 4,500 years ago)."
+ },
+ {
+  "id": "q50",
+  "question": "Which is hotter?",
+  "options": [
+   "The surface of the Sun",
+   "A lightning bolt"
+  ],
+  "correct": 1,
+  "explanation": "Lightning can reach about 30,000 K, several times the Sun's surface (about 5,800 K)."
+ },
+ {
+  "id": "q51",
+  "question": "Which is the larger number?",
+  "options": [
+   "2 to the 10th power",
+   "10 cubed"
+  ],
+  "correct": 0,
+  "explanation": "2^10 = 1,024, just above 10³ = 1,000."
+ }
+]
