@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [1.0.0] - 2026-11-05
+
+### Added
+
+- Rebuilt as a Next.js 15 + TypeScript + Tailwind app
+- Teacher accounts (email magic link), class codes and a live class dashboard
+- Students join with a code and nickname; no student accounts or emails
+- Humans vs. Claude page comparing anonymous aggregate player calibration with Claude's
+- Supabase Postgres with row-level security, server-side scoring and hashed-IP rate limiting
+- Database security tests in CI
+
 ## [0.2.0] - 2026-11-04
 
 ### Added

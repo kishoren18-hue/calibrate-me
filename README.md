@@ -1,73 +1,97 @@
 # Calibrate Me
 
-[![tests](https://github.com/kishoren18-hue/calibrate-me/actions/workflows/pages.yml/badge.svg)](https://github.com/kishoren18-hue/calibrate-me/actions/workflows/pages.yml) [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![ci](https://github.com/kishoren18-hue/calibrate-me/actions/workflows/ci.yml/badge.svg)](https://github.com/kishoren18-hue/calibrate-me/actions/workflows/ci.yml) [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**A 20-question game that measures whether your confidence is honest.**
-
-**▶ Play it: https://kishoren18-hue.github.io/calibrate-me/**
+**A game that measures whether your confidence is honest, with live classroom dashboards and a head-to-head comparison with Claude.**
 
 You answer two-choice questions and say how sure you are each time. At the end you see two things most people have never measured about themselves:
 
 * **Calibration:** when you said 80%, were you right about 80% of the time?
 * **Discrimination** (metacognitive sensitivity): were you more confident on the answers you got right than on the ones you got wrong?
 
-These are the same measures cognitive scientists use to study confidence in people and that AI researchers use to check whether a language model knows when it's wrong. The game makes the idea concrete in about three minutes, and it's the most direct way I've found to explain why "the AI sounded sure" is not evidence.
+These are the measures cognitive scientists use to study human confidence, and the ones AI researchers use to check whether a language model knows when it's wrong.
 
-| Question | Results |
+| Play | Results |
 |---|---|
 | ![Question screen](docs/question.png) | ![Results screen](docs/results.png) |
 
-*The results screenshot is from a scripted run with random answers, so the scores are bad on purpose.*
-
-## What it measures
-
-| Number | What it means |
-|---|---|
-| Overconfidence | Average confidence minus accuracy. Positive means you felt surer than you were. |
-| Discrimination | Type-2 AUROC: the chance a random right answer got more confidence than a random wrong one. 0.5 means your confidence carried no information. |
-| Brier score | Combined accuracy and calibration. Always answering 50% scores 0.25. |
-| Calibration chart | Accuracy at each confidence level you used. Honest confidence sits on the diagonal. |
-| Murphy decomposition | Brier = reliability − resolution + uncertainty, shown under "What these numbers mean". |
-
-You can be perfectly calibrated with zero discrimination: say 70% on everything when you get 70% right. Good judgment needs both, which is why both are shown.
-
 ## Features
 
-* **Round length:** 10, 20 or 40 questions. Longer rounds give steadier scores.
-* **Share links:** "Copy share link" encodes only your aggregate scores into the link (no answers, no questions, nothing about you). Anyone who opens it sees your calibration chart and a "Can you beat it?" button. The data sits in the URL fragment, which browsers never send to a server.
-* **History:** sessions are saved in your browser only (localStorage), so you can watch your overconfidence trend across rounds.
-* **Keyboard and screen readers:** play entirely with A/B and 1-6, with labeled answer groups, pressed states, focus moved to each new question, results announced, and reduced motion respected.
-* **No tracking and no backend:** a static page with nothing sent anywhere.
+**For players**
+* Rounds of 10, 20 or 40 questions, full keyboard play (A/B, then 1–6), screen-reader labels.
+* Results with a calibration chart, Brier score with its Murphy decomposition, and your most confident misses.
+* Share links that carry only aggregate scores, never answers.
 
-## Use in a classroom
+**For teachers**
+* Sign in with an emailed link, create a class, get a 6-character code.
+* Students join with the code and a nickname. **No student accounts, emails or passwords.**
+* A live dashboard: each student's calibration, the class calibration curve, and the questions that fooled the most people. Delete a student's round or the whole class at any time.
 
-It runs in any browser with no sign-in. A workshop flow that works:
+**Humans vs. Claude**
+* Claude answers every question twice (options swapped, to cancel position bias) and rates its confidence on the same scale players use.
+* Anonymous, aggregate player data is plotted against Claude's on one calibration chart, with the questions where people and Claude differ most.
 
-1. Everyone plays one round and writes down their overconfidence number.
-2. Talk about the most confident misses: why did those feel certain?
-3. Play a second round and compare.
-4. Connect it to AI: a chatbot's tone of certainty is a confidence signal too, and it can be just as miscalibrated.
+## Architecture
+
+```
+Next.js 15 · React 19 · TypeScript · Tailwind CSS
+   │
+   ├── solo / class play ──► Supabase RPC cm_submit_session  (validates, scores, rate-limits)
+   ├── teacher dashboard ──► Supabase Postgres, row-level security  +  Supabase Auth (magic link)
+   └── humans vs. Claude ──► Supabase RPCs (aggregates only, n ≥ 5)  +  claude-answers.json
+
+GitHub Action "ask claude" (manual) ──► scripts/ask_claude.py ──► commits src/data/claude-answers.json
+```
+
+### Data and privacy design
+
+| Who | Can do |
+|---|---|
+| Anyone | Play; submit a round through one validated function |
+| Students | Join with a code and nickname; nothing else is collected |
+| Teachers | Read and delete rounds in classes they own; nothing else |
+| The public | Read per-question aggregates with at least 5 answers |
+
+* Players can't write to tables directly. `cm_submit_session` checks the format, computes every score on the server (accuracy, Brier, type-2 AUROC), and limits each network to 60 rounds a day using a one-way hash; raw IP addresses are never stored.
+* Deleting a class deletes every round and answer in it.
+* `supabase/tests/rls_test.sql` checks all of this as an anonymous player, the owning teacher and another teacher, and runs in CI against a real Postgres.
 
 ## Run locally
 
-It's plain HTML, CSS and ES modules with no build step:
-
 ```bash
-python3 -m http.server 8000
-# open http://localhost:8000
+npm install
+cp .env.example .env.local   # optional: Supabase URL + anon key
+npm run dev
 ```
 
-Tests (Node 20+):
+Without Supabase, solo play works and classes / humans-vs-Claude show a "not configured" state.
+
+## Tests
 
 ```bash
-npm test
+npm test            # scoring math, share links, question bank (Vitest)
+npm run lint && npm run typecheck && npm run build
 ```
 
-The tests cover the scoring math (including that the Murphy decomposition adds back up to the Brier score), share-link encoding (round trips, URL safety, and rejection of tampered links), and the question bank for malformed or duplicate rows.
+CI also applies the database migration to Postgres and runs the security tests.
+
+## Deploy
+
+1. Create a Supabase project and run `supabase/migrations/0001_calibrate_me.sql`.
+2. Import the repository into Vercel and set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `NEXT_PUBLIC_SITE_URL`.
+3. In Supabase → Authentication → URL configuration, add the site URL and `<site>/auth/callback`.
+4. To fill in the Claude comparison, add the `ANTHROPIC_API_KEY` repository secret and run **Actions → ask claude**.
+
+## Use in a classroom
+
+1. Create a class and put the join link on the board.
+2. Everyone plays one round. Look at the class curve together: where is it below the line?
+3. Discuss the questions that fooled the most people. Why did they feel certain?
+4. Open **Humans vs. Claude**. A chatbot's tone of certainty is a confidence signal too. Is it more honest than ours?
 
 ## Adding questions
 
-Questions live in `questions.js` as `[question, optionA, optionB, correctIndex, explanation]`. Good questions have one indisputable answer and a mix of difficulty; counterintuitive ones ("Which city is farther west: Los Angeles or Reno?") are the most useful because they produce confident mistakes. Option order is shuffled at play time.
+Questions live in `src/data/questions.json` (`id`, `question`, `options`, `correct`, `explanation`). Good questions have one indisputable answer; counterintuitive ones are the most useful because they produce confident mistakes. Keep existing ids stable, since stored answers refer to them.
 
 ## Why I built this
 
@@ -75,7 +99,7 @@ My research is on calibration in language models: whether a model's confidence m
 
 ## Contributing
 
-Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and ideas to start with, [CHANGELOG.md](CHANGELOG.md) for what's new, and [SECURITY.md](SECURITY.md) to report a problem privately.
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md), [CHANGELOG.md](CHANGELOG.md) and [SECURITY.md](SECURITY.md).
 
 ## License
 
