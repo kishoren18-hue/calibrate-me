@@ -12,14 +12,14 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: { default: "Calibrate Me: do you know what you know?", template: "%s · Calibrate Me" },
   description:
-    "A short game that measures whether your confidence is honest, with classroom dashboards for teachers and a comparison with Claude.",
+    "A short game that measures whether your confidence is honest, with classroom dashboards for teachers and a comparison with AI models.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
 };
 
 const nav = [
   { href: "/", label: "Play" },
   { href: "/join", label: "Join a class" },
-  { href: "/vs-claude", label: "Humans vs. Claude" },
+  { href: "/vs-ai", label: "Humans vs. AI" },
   { href: "/teach", label: "For teachers" },
 ];
 

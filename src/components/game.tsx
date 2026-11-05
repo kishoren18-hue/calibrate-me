@@ -139,8 +139,8 @@ export function Game({ classCode, className, nickname }: { classCode?: string; c
             <input type="checkbox" checked={contribute} onChange={(e) => setContribute(e.target.checked)} className="mt-1" />
             <span>
               Add my answers anonymously to the{" "}
-              <Link href="/vs-claude" className="underline">
-                humans vs. Claude
+              <Link href="/vs-ai" className="underline">
+                humans vs. AI
               </Link>{" "}
               comparison. No name, email or account is stored.
             </span>
@@ -270,8 +270,8 @@ export function Game({ classCode, className, nickname }: { classCode?: string; c
         >
           {copied ? "Link copied" : "Copy share link"}
         </Button>
-        <Link href="/vs-claude" className="inline-flex items-center px-3 text-sm text-accent underline">
-          How do people compare with Claude?
+        <Link href="/vs-ai" className="inline-flex items-center px-3 text-sm text-accent underline">
+          How do people compare with AI?
         </Link>
       </div>
       {copied && <p className="text-xs text-muted">The link contains only your scores, not your answers.</p>}

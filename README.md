@@ -2,7 +2,7 @@
 
 [![ci](https://github.com/kishoren18-hue/calibrate-me/actions/workflows/ci.yml/badge.svg)](https://github.com/kishoren18-hue/calibrate-me/actions/workflows/ci.yml) [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**A game that measures whether your confidence is honest, with live classroom dashboards and a head-to-head comparison with Claude.**
+**A game that measures whether your confidence is honest, with live classroom dashboards and a head-to-head comparison with AI models from different companies.**
 
 You answer two-choice questions and say how sure you are each time. At the end you see two things most people have never measured about themselves:
 
@@ -27,9 +27,9 @@ These are the measures cognitive scientists use to study human confidence, and t
 * Students join with the code and a nickname. **No student accounts, emails or passwords.**
 * A live dashboard: each student's calibration, the class calibration curve, and the questions that fooled the most people. Delete a student's round or the whole class at any time.
 
-**Humans vs. Claude**
-* Claude answers every question twice (options swapped, to cancel position bias) and rates its confidence on the same scale players use.
-* Anonymous, aggregate player data is plotted against Claude's on one calibration chart, with the questions where people and Claude differ most.
+**Humans vs. AI**
+* Each AI model (Gemini, Claude, or both) answers every question twice (options swapped, to cancel position bias) and rates its confidence on the same scale players use.
+* Anonymous, aggregate player data is plotted against every model on one calibration chart, with the questions where people and AI differ most.
 
 ## Architecture
 
@@ -38,9 +38,9 @@ Next.js 15 · React 19 · TypeScript · Tailwind CSS
    │
    ├── solo / class play ──► Supabase RPC cm_submit_session  (validates, scores, rate-limits)
    ├── teacher dashboard ──► Supabase Postgres, row-level security  +  Supabase Auth (magic link)
-   └── humans vs. Claude ──► Supabase RPCs (aggregates only, n ≥ 5)  +  claude-answers.json
+   └── humans vs. AI ──► Supabase RPCs (aggregates only, n ≥ 5)  +  ai-answers.json
 
-GitHub Action "ask claude" (manual) ──► scripts/ask_claude.py ──► commits src/data/claude-answers.json
+GitHub Action "ask ai" (manual, once per model) ──► scripts/ask_ai.py ──► commits src/data/ai-answers.json
 ```
 
 ### Data and privacy design
@@ -64,7 +64,7 @@ cp .env.example .env.local   # optional: Supabase URL + anon key
 npm run dev
 ```
 
-Without Supabase, solo play works and classes / humans-vs-Claude show a "not configured" state.
+Without Supabase, solo play works and classes / humans-vs-AI show a "not configured" state.
 
 ## Tests
 
@@ -80,14 +80,14 @@ CI also applies the database migration to Postgres and runs the security tests.
 1. Create a Supabase project and run `supabase/migrations/0001_calibrate_me.sql`.
 2. Import the repository into Vercel and set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `NEXT_PUBLIC_SITE_URL`.
 3. In Supabase → Authentication → URL configuration, add the site URL and `<site>/auth/callback`.
-4. To fill in the Claude comparison, add the `ANTHROPIC_API_KEY` repository secret and run **Actions → ask claude**.
+4. To fill in the AI comparison, add a `GEMINI_API_KEY` repository secret (free from Google AI Studio) and run **Actions → ask ai** once per model, for example `gemini-3.8-flash` and `gemini-3.5-flash-lite`. Claude models work the same way with `ANTHROPIC_API_KEY`. The questions are public trivia; on Gemini's free tier, Google may use them to improve its models.
 
 ## Use in a classroom
 
 1. Create a class and put the join link on the board.
 2. Everyone plays one round. Look at the class curve together: where is it below the line?
 3. Discuss the questions that fooled the most people. Why did they feel certain?
-4. Open **Humans vs. Claude**. A chatbot's tone of certainty is a confidence signal too. Is it more honest than ours?
+4. Open **Humans vs. AI**. A chatbot's tone of certainty is a confidence signal too. Is it more honest than ours?
 
 ## Adding questions
 

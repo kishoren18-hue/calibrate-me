@@ -1,0 +1,47 @@
+name: ask ai
+
+# Manual: Actions tab -> "ask ai" -> Run workflow. Needs the repository secret
+# GEMINI_API_KEY (a free Google AI Studio key works) for gemini-* models, or
+# ANTHROPIC_API_KEY for claude-* models. Run it once per model; each run adds
+# or replaces that model in src/data/ai-answers.json and commits it.
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Model ID (gemini-* or claude-*)"
+        default: "gemini-3.8-flash"
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ai-answers
+  cancel-in-progress: false
+
+jobs:
+  ask:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Ask the model every question
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MODEL: ${{ inputs.model }}
+        run: python scripts/ask_ai.py --model "$MODEL"
+      - name: Commit results
+        env:
+          MODEL: ${{ inputs.model }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/ai-answers.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Update AI answers ($MODEL)"
+          git pull --rebase
+          git push

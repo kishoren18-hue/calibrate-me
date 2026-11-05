@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-11-05
+
+### Changed
+
+- Humans vs. Claude is now **Humans vs. AI**: any number of models from different companies (Gemini by default, with a free key; Claude optional) on one calibration chart. `/vs-claude` redirects to `/vs-ai`.
+- `scripts/ask_ai.py` replaces `ask_claude.py` and merges each model into `src/data/ai-answers.json`.
+
 ## [1.0.0] - 2026-11-05
 
 ### Added
